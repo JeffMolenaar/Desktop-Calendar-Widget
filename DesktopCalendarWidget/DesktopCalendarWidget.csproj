@@ -24,8 +24,4 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="Converters\CommonConverters.cs" />
-  </ItemGroup>
-
 </Project>
