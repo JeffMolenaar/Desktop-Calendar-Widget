@@ -19,7 +19,6 @@
         <converters:BooleanToBrushConverter x:Key="BooleanToBrushConverter"/>
         <converters:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter"/>
         <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
-        <converters:NullToBooleanConverter x:Key="NullToBooleanConverter"/>
         
         <!-- Styles -->
         <Style x:Key="EventStyle" TargetType="Border">
@@ -51,7 +50,8 @@
         <!-- Main Widget Content -->
         <Border Background="{DynamicResource MaterialDesignPaper}"
                 CornerRadius="8"
-                Margin="10">
+                Margin="10"
+                Effect="{StaticResource MaterialDesignShadowDepth3}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
