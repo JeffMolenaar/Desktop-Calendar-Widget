@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:tb="http://www.hardcodet.net/taskbar"
-        xmlns:converters="clr-namespace:DesktopCalendarWidget.Converters"
         Title="Desktop Calendar Widget" 
         Height="600" Width="400"
         MinHeight="400" MinWidth="300"
@@ -15,10 +14,8 @@
         ResizeMode="CanResizeWithGrip">
 
     <Window.Resources>
-        <!-- Converters -->
-        <converters:BooleanToBrushConverter x:Key="BooleanToBrushConverter"/>
-        <converters:BooleanToFontWeightConverter x:Key="BooleanToFontWeightConverter"/>
-        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <!-- Built-in converters -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         
         <!-- Styles -->
         <Style x:Key="EventStyle" TargetType="Border">
@@ -27,6 +24,49 @@
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="Background" Value="{Binding CalendarColor}"/>
             <Setter Property="Opacity" Value="0.8"/>
+        </Style>
+        
+        <!-- Style for TextBlock with conditional formatting -->
+        <Style x:Key="DayTextStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsCurrentMonth}" Value="False">
+                    <Setter Property="Foreground" Value="LightGray"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Style for calendar day border with conditional background -->
+        <Style x:Key="DayBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="MinHeight" Value="60"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsToday}" Value="True">
+                    <Setter Property="Background" Value="LightBlue"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!-- Style for location text with visibility based on content -->
+        <Style x:Key="LocationTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Location}" Value="">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Location}" Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
 
@@ -158,16 +198,10 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
-                                            BorderThickness="0.5"
-                                            Background="{Binding IsToday, Converter={StaticResource BooleanToBrushConverter}}"
-                                            MinHeight="60">
+                                    <Border Style="{StaticResource DayBorderStyle}">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Day}"
-                                                       HorizontalAlignment="Center"
-                                                       Margin="2"
-                                                       FontWeight="{Binding IsToday, Converter={StaticResource BooleanToFontWeightConverter}}"
-                                                       Foreground="{Binding IsCurrentMonth, Converter={StaticResource BooleanToBrushConverter}}"/>
+                                                       Style="{StaticResource DayTextStyle}"/>
                                             
                                             <ItemsControl ItemsSource="{Binding Events}" Margin="1">
                                                 <ItemsControl.ItemTemplate>
@@ -214,9 +248,7 @@
                                                                Foreground="White"
                                                                FontWeight="SemiBold"/>
                                                     <TextBlock Text="{Binding Location}"
-                                                               Foreground="White"
-                                                               FontSize="10"
-                                                               Visibility="{Binding Location, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                                               Style="{StaticResource LocationTextStyle}"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
