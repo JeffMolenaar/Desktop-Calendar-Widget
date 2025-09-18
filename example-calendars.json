@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Personal Calendar",
+    "Url": "https://your-nextcloud-domain/remote.php/dav/calendars/username/personal/",
+    "Username": "your-username",
+    "Password": "your-app-password",
+    "Color": "#2196F3",
+    "SyncIntervalMinutes": 15,
+    "IsEnabled": true,
+    "LastSync": "1970-01-01T00:00:00"
+  },
+  {
+    "Name": "Work Calendar", 
+    "Url": "https://your-nextcloud-domain/remote.php/dav/calendars/username/work/",
+    "Username": "your-username",
+    "Password": "your-app-password", 
+    "Color": "#4CAF50",
+    "SyncIntervalMinutes": 30,
+    "IsEnabled": true,
+    "LastSync": "1970-01-01T00:00:00"
+  }
+]
